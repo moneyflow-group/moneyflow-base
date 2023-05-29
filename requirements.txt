@@ -1,0 +1,13 @@
+pytest
+pytest-django
+pytz
+structlog
+django
+frontend
+holidays
+dramatiq
+django-environ
+pycountry
+redis
+python-stdnum
+pytest-responses
