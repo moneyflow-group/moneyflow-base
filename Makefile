@@ -47,6 +47,6 @@ test: tests  ## Run the test suite
 
 release: VERSION
 	@cp VERSION VERSION-
-	@awk 'BEGIN {FS="." } { print "$$1.$$2.$$3+1" }' VERSION- > xxx
+	@awk 'BEGIN {FS="." } { print "$1.$2.$3+1" }' VERSION- > xxx
 	@git add .
 	@git commit -m "Version bump"
