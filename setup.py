@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='moneyflow-base',
-    version='0.1.4',  # Required
+    version='0.1.5',  # Required
     description='Moneyflow Base library',
     long_description=long_description,
     url='https://github.com/moneyflow-group/moneyflow-base',
