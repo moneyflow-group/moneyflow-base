@@ -44,3 +44,9 @@ venv: requirements.txt  ## Build the virtual environment
 
 test: tests  ## Run the test suite
 	$(pytest) tests
+
+release: VERSION
+	@cp VERSION VERSION-
+	@awk 'BEGIN {FS="." } { print "$$1.$$2.$$3+1" }' VERSION- > xxx
+	@git add .
+	@git commit -m "Version bump"

@@ -9,10 +9,12 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+with open(path.join(here, 'VERSION'), encoding='utf-8') as f:
+    version = f.read()
 
 setup(
     name='moneyflow-base',
-    version='0.1.5',  # Required
+    version=version,  # Required
     description='Moneyflow Base library',
     long_description=long_description,
     url='https://github.com/moneyflow-group/moneyflow-base',
