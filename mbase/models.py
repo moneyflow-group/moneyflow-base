@@ -18,7 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from mbase.eventlog import Event  # NOQA
 from mbase.exceptions import MFValidationError
 from mbase.future import Future  # NOQA
-from mbase.logging import mf_get_logger
+from mbase.mlogging import mf_get_logger
 
 logger = mf_get_logger(__name__)
 

@@ -24,7 +24,7 @@ from dramatiq.results import Results
 from dramatiq.results.backends import StubBackend as ResultsStubBackend
 from mbase.exceptions import BaseException as _BaseException
 from mbase.utils import utcnow
-from mbase.logging import mf_get_logger
+from mbase.mlogging import mf_get_logger
 
 logger = mf_get_logger(__name__)
 

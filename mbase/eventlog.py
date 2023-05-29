@@ -17,7 +17,7 @@ from base.exceptions import MFValidationError
 from base.utils import get_site_absolute_url, utcnow
 
 from mbase.exceptions import DuplicateEvent
-from mbase.logging import mf_get_logger
+from mbase.mlogging import mf_get_logger
 
 
 logger = mf_get_logger(__name__)

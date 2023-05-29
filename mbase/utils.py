@@ -27,7 +27,7 @@ from stdnum.se import orgnr as se_orgnr
 from stdnum.util import isdigits as stdnum_isdigits
 
 from mbase.exceptions import InvalidCRN
-from mbase.logging import mf_get_logger
+from mbase.mlogging import mf_get_logger
 
 logger = mf_get_logger(__name__)
 

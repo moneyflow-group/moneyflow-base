@@ -4,7 +4,7 @@ import os
 import pytest  # NOQA
 import pytz
 
-from base.exceptions import InvalidCRN
+from mbase.exceptions import InvalidCRN
 from mbase.utils import (
     extract_cvr,
     format_days_ago,

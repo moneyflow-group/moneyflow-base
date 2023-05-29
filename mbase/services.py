@@ -1,12 +1,11 @@
 import sys
 from typing import Type
-from mbase.logging import mf_get_logger
+from mbase.mlogging import mf_get_logger
 import dramatiq
 
 logger = mf_get_logger(__name__)
 
 is_pytest = "pytest" in sys.argv[0]
-
 
 class MethodWrapper(object):
     def __init__(self, actor, observers, method_name, *args, **kwargs):
