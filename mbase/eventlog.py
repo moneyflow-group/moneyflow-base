@@ -5,16 +5,16 @@ from dataclasses import dataclass
 from crum import get_current_user
 
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.db.models import JSONField, QuerySet
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from base.exceptions import MFValidationError
-from base.utils import get_site_absolute_url, utcnow
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from mbase.exceptions import MFValidationError
+from mbase.utils import get_site_absolute_url, utcnow
 
 from mbase.exceptions import DuplicateEvent
 from mbase.mlogging import mf_get_logger

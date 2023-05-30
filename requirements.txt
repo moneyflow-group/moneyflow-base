@@ -1,3 +1,7 @@
+sphinx
+sphinx_rtd_theme
+sphinxcontrib-mermaid
+python-docs-theme
 pytest-django
 pytz
 structlog
@@ -6,6 +10,7 @@ frontend
 holidays
 dramatiq
 django-environ
+django-crum
 pycountry
 redis
 python-stdnum

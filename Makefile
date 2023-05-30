@@ -22,7 +22,7 @@ pip = $(py) -m pip
 PY_PATHS := $(PWD)
 pypath := python3 -c 'import sys, pathlib as p; print(":".join([str(p.Path(x).resolve()) for x in sys.argv[1:]]))'
 export PYTHONPATH=$(shell $(pypath) $(PY_PATHS))
-export DJANGO_SETTINGS_MODULE=tests.settings
+export DJANGO_SETTINGS_MODULE=settings
 
 .PHONY: test-pypath
 test-pypath: export PYTHONPATH = $(shell $(pypath) $(PY_PATHS))
@@ -32,7 +32,7 @@ test-pypath:
 
 
 .DEFAULT_GOAL := help
-.PHONY: help
+.PHONY: help 
 help: ## Display this help section
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z]+.*:.*?##[a-zA-Z0-9 ]*/ {printf "\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -44,4 +44,15 @@ venv: requirements.txt  ## Build the virtual environment
 
 test: tests  ## Run the test suite
 	$(pytest) tests
+
+# You can set these variables from the command line, and also
+# from the environment for the first two.
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= sphinx-build
+SOURCEDIR     = docs/source
+BUILDDIR      = docs/build
+
+.PHONY: docs
+docs:  ## Generate documentation
+	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
 
