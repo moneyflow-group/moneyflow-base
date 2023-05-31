@@ -24,7 +24,7 @@ from mbase.mlogging import mf_get_logger
 logger = mf_get_logger(__name__)
 
 
-class BaseModelQuerySet(QuerySet):
+class BaseModelQuerySet(models.QuerySet):
     def update(self, *args, **kwargs):
         queryset = self
         for obj in queryset:
