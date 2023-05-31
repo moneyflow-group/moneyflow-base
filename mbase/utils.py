@@ -32,14 +32,6 @@ from mbase.mlogging import mf_get_logger
 logger = mf_get_logger(__name__)
 
 
-def format_industry_code(code):
-    try:
-        main_group, secondary_group, tertiary_group = re.findall(r"\d{2}", code)
-        return f"{main_group}.{secondary_group}.{tertiary_group}"
-    except ValueError:
-        return code
-
-
 def split_locale(locale_string):
     """
     Split a locale string into its language and country parts.
@@ -348,29 +340,6 @@ def _safe_trace_kwargs(kwargs, included_safe_kwargs):
             if k.endswith("_id") or k.endswith("_crn") or k in list(included_safe_kwargs)
         ]
     )
-
-
-def trace_logging(*included_safe_kwargs):
-    """
-    Usage: Decorate your function with
-     @trace_logging("is_payer", "amount")
-
-    Automatically included are safelisted arguments and arguments ending in _id and _crn
-    """
-
-    def decorator(function):
-        logger = mf_get_logger(f"{function.__module__}")
-
-        @wraps(function)
-        def wrapper(*args, **kwargs):
-            logger.debug(f"{function.__name__}:begin", **_safe_trace_kwargs(kwargs, included_safe_kwargs))
-            result = function(*args, **kwargs)
-            logger.debug(f"{function.__name__}:done", **_safe_trace_kwargs(kwargs, included_safe_kwargs))
-            return result
-
-        return wrapper
-
-    return decorator
 
 
 def yield_list_chunks(lst, chunk_size: int):

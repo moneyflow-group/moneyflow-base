@@ -12,6 +12,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxLengthValidator, MaxValueValidator, MinLengthValidator, MinValueValidator
+from django.db.models import F
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -23,7 +24,18 @@ from mbase.mlogging import mf_get_logger
 logger = mf_get_logger(__name__)
 
 
+class BaseModelQuerySet(QuerySet):
+    def update(self, *args, **kwargs):
+        queryset = self
+        for obj in queryset:
+            # Invoke .save() functionality on bulk update
+            obj.save()
+        super().update(*args, **kwargs)
+
+
 class BaseModel(models.Model):
+    objects = BaseModelQuerySet.as_manager()
+
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True, editable=False)
     created_by = models.ForeignKey(
@@ -43,6 +55,8 @@ class BaseModel(models.Model):
         null=True,
         default=None,
     )
+    m_generation = models.IntegerField(default=-1, help_text="Indicating number of instance's updates")
+    m_version = models.CharField(max_length=250, blank=True, null=True, help_text="System version upon save")
 
     events = GenericRelation("base.Event")
 
@@ -53,6 +67,8 @@ class BaseModel(models.Model):
             f"{prefix}_created_at": self.created_at,
             f"{prefix}_modified_at": self.modified_at,
             f"{prefix}_modified_by": self.modified_by,
+            f"{prefix}_m_generation": self.m_generation,
+            f"{prefix}_m_version": self.m_version,
         }
 
     class Meta:
@@ -64,8 +80,46 @@ class BaseModel(models.Model):
             if self._state.adding:
                 self.created_by = user
             self.modified_by = user
-
+        self.m_generation = F("m_generation") + 1
+        self.m_version = settings.VERSION
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.__class__.__name__} [{self.id}]"
+
+class BaseDataModel(BaseModel):
+
+    class Meta:
+        abstract = True
+
+    def map_fields(self, event_data, skip=[]):
+        mapped = {}
+        not_mapped = []
+        ignore_fields = ["id", "generation", "modified_at", "created_at"] + skip
+        for field in self._meta.get_fields():
+            if field.name in ignore_fields:
+                continue
+            try:
+                data = self.map_field(field, event_data)
+                if data is None:
+                    continue
+                current = getattr(self, field.name)
+                fval = field.toval(data)
+                if fval != current:
+                    mapped[field.name] = field.totxt(fval)
+            except NoSourceException:
+                not_mapped.append(field.name)
+        return mapped, not_mapped
+
+    def compare_to_data(self, data, skip=[]):
+        mapped, _ = self._compare_to_data(data, skip=skip)
+        if len(mapped) == 0:
+            return None
+        return dict(mapped)
+
+    def _compare_to_data(self, data, skip=[]):
+        mapped, not_mapped = self.map_fields(data, skip=skip)
+        return mapped, not_mapped
 
     def set_field(self, k, v, force=False):
         if not force and k not in self.api_editable_fields:
@@ -76,10 +130,9 @@ class BaseModel(models.Model):
         setattr(self, k, v)
 
     def api_dict(self):
+        # TODO: No reference to base_company here :-)
         return {field: self.base_company.crn if field == "crn" else getattr(self, field) for field in self.api_fields}
 
-    def __str__(self):
-        return f"{self.__class__.__name__} [{self.id}]"
 
 
 class WORMBaseModel(BaseModel):
