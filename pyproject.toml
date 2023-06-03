@@ -1,0 +1,26 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "mbase"
+version = "0.0.1"
+description = "Moneyflow Base"
+authors = [
+  { name = "Team Moneyflow", email = "infrastructure@moneyflow.io" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+  "structlog",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/moneyflow-group/moneyflow-base"
+"Bug Tracker" = "https://github.com/moneyflow-group/moneyflow-base/issues"
