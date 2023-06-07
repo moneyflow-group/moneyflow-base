@@ -16,7 +16,7 @@ import sys
 import django
 
 sys.path.insert(0, os.path.abspath("../mbase/"))
-os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "tests.settings"
 django.setup()
 
 

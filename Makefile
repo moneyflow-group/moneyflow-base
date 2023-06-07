@@ -22,7 +22,7 @@ pip = $(py) -m pip
 PY_PATHS := $(PWD)
 pypath := python3 -c 'import sys, pathlib as p; print(":".join([str(p.Path(x).resolve()) for x in sys.argv[1:]]))'
 export PYTHONPATH=$(shell $(pypath) $(PY_PATHS))
-export DJANGO_SETTINGS_MODULE=settings
+export DJANGO_SETTINGS_MODULE=tests.settings
 
 .PHONY: test-pypath
 test-pypath: export PYTHONPATH = $(shell $(pypath) $(PY_PATHS))
