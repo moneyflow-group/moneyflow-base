@@ -1,5 +1,4 @@
 import os
-print("PP=", os.environ['PYTHONPATH'])
 
 from mbase.services import BaseService, ObservableMixin, BaseObserver
 from mbase.mlogging import mf_get_logger

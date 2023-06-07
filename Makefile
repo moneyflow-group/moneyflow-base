@@ -55,4 +55,11 @@ BUILDDIR      = docs/build
 .PHONY: docs
 docs:  ## Generate documentation
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(0)
+	@touch docs
 
+build: docs  ## Build mbase using flit
+	flit build
+
+release: mbase   ## Publish to PyPI
+	flit publish
+	@touch dist
